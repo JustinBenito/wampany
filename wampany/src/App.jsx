@@ -33,8 +33,16 @@ const Header = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="absolute top-0 right-0 z-20 p-6"
+      className="absolute top-0 left-0 right-0 z-20 p-6 w-full flex justify-between items-center"
     >
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className="text-black text-xl font-semibold"
+      >
+        wampany.com
+      </motion.div>
+
       <motion.a 
         href="mailto:hello@wampany.com"
         whileHover={{ scale: 1.05 }}
@@ -151,7 +159,7 @@ const HeroSection = () => {
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative z-10"
+        className="relative  px-20 z-10"
       >
         <motion.div
           className="mx-auto mb-12"
@@ -159,9 +167,9 @@ const HeroSection = () => {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 1, delay: 0.4, type: "spring", bounce: 0.3 }}
         >
-          <h1 className="text-8xl md:text-9xl lg:text-[12rem] font-light mb-4 text-gray-900 font-['Bricolage_Grotesque'] leading-none">
+          <h1 className="text-7xl sm:text-8xl md:text-9xl leading-12 sm:leading-15 md:leading-30 lg:text-[12rem] font-light mb-4 text-gray-900 font-['Bricolage_Grotesque']">
             <motion.span 
-              className="italic block"
+              className="italic block text-left  text-7xl md:text-8xl"
               initial={{ x: -30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -177,7 +185,7 @@ const HeroSection = () => {
               Wallpaper
             </motion.span>
             <motion.span 
-              className="font-light block"
+              className="font-light text-right text-5xl block"
               initial={{ x: 30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 1 }}
@@ -437,12 +445,12 @@ const PricingSection = () => {
     <motion.section 
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 1.5 }}
       viewport={{ once: true }}
       className="py-24 px-6"
     >
       <motion.h2 
-        className="text-5xl md:text-6xl font-bold text-center mb-20 text-gray-900 font-['Bricolage_Grotesque']"
+        className="text-5xl  md:text-6xl font-bold text-center mb-40 text-gray-900 font-['Bricolage_Grotesque']"
         initial={{ y: 30, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, type: "spring", bounce: 0.3 }}
@@ -451,7 +459,7 @@ const PricingSection = () => {
         Pricing
       </motion.h2>
       
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16 items-start">
         {plans.map((plan, index) => (
           <motion.div
             key={plan.name}
@@ -462,7 +470,7 @@ const PricingSection = () => {
             whileHover={{ 
               y: -20, 
               scale: 1.05,
-              transition: { duration: 0.3, type: "spring", bounce: 0.4 }
+              transition: { duration: 0.4, type: "easeInOut", bounce: 0.1 }
             }}
             className={`relative p-8 rounded-3xl backdrop-blur-sm border font-['Bricolage_Grotesque'] ${
               plan.highlighted 
@@ -504,7 +512,7 @@ const PricingSection = () => {
             </ul>
             
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.005, transition: { duration: 1.3, type: "easeInOut", bounce: 0 } }}
               whileTap={{ scale: 0.95 }}
               className={`w-full py-4 px-6 rounded-2xl font-semibold text-sm transition-all duration-200 ${
                 plan.highlighted
@@ -534,7 +542,7 @@ const Footer = () => {
       viewport={{ once: true }}
       className="py-16 text-center text-gray-600"
     >
-      <p className="text-sm font-['Bricolage_Grotesque']">Contact us for fresh designs & innovative solutions</p>
+      <p className="text-sm font-['Bricolage_Grotesque']">Designing with love by Jayden & Justin</p>
     </motion.footer>
   )
 }
