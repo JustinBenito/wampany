@@ -83,12 +83,15 @@ const HeroSection = () => {
         }}
       />
 
-      {/* Frosted glass gradient ellipses */}
+      {/* Bright vibrant gradient ellipses with noise */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div 
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full"
           style={{
-            background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.4) 0%, rgba(236, 72, 153, 0.3) 50%, rgba(59, 130, 246, 0.2) 100%)',
+            background: `
+              url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter1)' opacity='0.3'/%3E%3C/svg%3E"),
+              linear-gradient(135deg, rgba(255, 165, 0, 0.9) 0%, rgba(255, 192, 203, 0.8) 50%, rgba(30, 144, 255, 0.85) 100%)
+            `,
             filter: 'blur(60px)',
           }}
           animate={{
@@ -105,7 +108,10 @@ const HeroSection = () => {
         <motion.div 
           className="absolute top-1/3 right-1/4 w-80 h-80 rounded-full"
           style={{
-            background: 'linear-gradient(225deg, rgba(34, 197, 94, 0.3) 0%, rgba(168, 85, 247, 0.2) 50%, rgba(236, 72, 153, 0.3) 100%)',
+            background: `
+              url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter2)' opacity='0.3'/%3E%3C/svg%3E"),
+              linear-gradient(225deg, rgba(255, 255, 0, 0.85) 0%, rgba(255, 165, 0, 0.8) 50%, rgba(255, 20, 147, 0.9) 100%)
+            `,
             filter: 'blur(50px)',
           }}
           animate={{
@@ -122,7 +128,10 @@ const HeroSection = () => {
         <motion.div 
           className="absolute bottom-1/3 left-1/3 w-72 h-72 rounded-full"
           style={{
-            background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.4) 0%, rgba(34, 197, 94, 0.2) 50%, rgba(168, 85, 247, 0.3) 100%)',
+            background: `
+              url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter3)' opacity='0.3'/%3E%3C/svg%3E"),
+              linear-gradient(45deg, rgba(30, 144, 255, 0.9) 0%, rgba(255, 255, 0, 0.75) 50%, rgba(255, 165, 0, 0.85) 100%)
+            `,
             filter: 'blur(40px)',
           }}
           animate={{
@@ -139,7 +148,10 @@ const HeroSection = () => {
         <motion.div 
           className="absolute top-1/2 right-1/3 w-64 h-64 rounded-full"
           style={{
-            background: 'linear-gradient(315deg, rgba(236, 72, 153, 0.3) 0%, rgba(59, 130, 246, 0.2) 50%, rgba(34, 197, 94, 0.3) 100%)',
+            background: `
+              url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter4'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter4)' opacity='0.3'/%3E%3C/svg%3E"),
+              linear-gradient(315deg, rgba(255, 20, 147, 0.85) 0%, rgba(30, 144, 255, 0.8) 50%, rgba(255, 255, 0, 0.9) 100%)
+            `,
             filter: 'blur(35px)',
           }}
           animate={{
@@ -148,6 +160,27 @@ const HeroSection = () => {
           }}
           transition={{
             duration: 22,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+
+        {/* Additional bright accent gradient */}
+        <motion.div 
+          className="absolute top-1/2 left-1/2 w-52 h-52 rounded-full"
+          style={{
+            background: `
+              url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter5'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter5)' opacity='0.3'/%3E%3C/svg%3E"),
+              linear-gradient(90deg, rgba(255, 165, 0, 0.85) 0%, rgba(255, 255, 0, 0.8) 50%, rgba(255, 192, 203, 0.9) 100%)
+            `,
+            filter: 'blur(45px)',
+          }}
+          animate={{
+            scale: [1.3, 1, 1.3],
+            rotate: [0, 360, 0],
+          }}
+          transition={{
+            duration: 18,
             repeat: Infinity,
             ease: "linear"
           }}
