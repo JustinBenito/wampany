@@ -169,7 +169,7 @@ const HeroSection = () => {
         >
           <h1 className="text-7xl sm:text-8xl md:text-9xl leading-12 sm:leading-15 md:leading-30 lg:text-[12rem] font-light mb-4 text-gray-900 font-['Bricolage_Grotesque']">
             <motion.span 
-              className="italic block text-left  text-7xl md:text-8xl"
+              className="italic block text-left text-7xl md:text-8xl font-['Instrument_Serif']"
               initial={{ x: -30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -185,7 +185,7 @@ const HeroSection = () => {
               Wallpaper
             </motion.span>
             <motion.span 
-              className="font-light text-right text-5xl block"
+              className="font-light text-right text-5xl block font-['Inter']"
               initial={{ x: 30, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8, delay: 1 }}
