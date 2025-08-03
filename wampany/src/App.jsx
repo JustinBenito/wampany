@@ -11,13 +11,16 @@ function App() {
         <div className="absolute bottom-40 left-40 w-72 h-72 bg-gradient-radial from-blue-200/20 to-transparent rounded-full blur-3xl"></div>
         <div className="absolute bottom-20 right-10 w-64 h-64 bg-gradient-radial from-rose-200/30 to-transparent rounded-full blur-3xl"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-radial from-violet-200/20 to-transparent rounded-full blur-3xl"></div>
+        
+        {/* Pink Aurora Borealis Background - Behind Everything */}
+
       </div>
       
       <div className="relative z-10">
         <Header />
         <HeroSection />
         <MarqueeSection />
-        <div className="bg-gradient-to-b from-transparent via-stone-100/50 to-stone-200/30">
+        <div className="bg-gradient-to-b from-transparent via-stone-100/50 to-transparent">
           <OurStorySection />
           <PricingSection />
           <Footer />
@@ -242,23 +245,87 @@ const HeroSection = () => {
 }
 
 const MarqueeSection = () => {
-  // Using placeholder images and gradients that don't have CORS issues
-  const createColorCards = (colors, count = 8) => {
-    return Array.from({ length: count }, (_, i) => (
-      <motion.div
-        key={i}
-        className={`h-32 w-48 md:h-40 md:w-60 lg:h-48 lg:w-72 mx-4 flex-shrink-0 rounded-2xl shadow-2xl border-4 border-white/60 backdrop-blur-sm ${colors[i % colors.length]}`}
-        whileHover={{ scale: 1.05, rotate: 1 }}
-        transition={{ duration: 0.3 }}
-        style={{
-          boxShadow: '0 20px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)'
-        }}
-      >
-        <div className="w-full h-full flex items-center justify-center text-white/20 font-bold text-lg">
-          WALLPAPER
-        </div>
-      </motion.div>
-    ))
+  const wampanyCompanies = [
+    {
+      image: '/wampany/kaboom.png',
+      name: 'kaboom.ai',
+      logo: 'https://media.licdn.com/dms/image/v2/D4E0BAQGa_OvWdy9pbQ/company-logo_200_200/B4EZdlkk9QHgAQ-/0/1749755778761/kaboom_ai_logo?e=2147483647&v=beta&t=8POa7IthJ4w9XCGTUw2y29_ZdpG5BsvI1ID8kGv7y5Y', // Using same image as logo for now
+      website: 'https://kaboom.ai'
+    },
+    {
+      image: '/wampany/linewise.png',
+      name: 'linewise.io',
+      logo: 'https://static.wixstatic.com/media/cc1207_3ecb6ce3bd9c413a9f45b39bfd52b0e8~mv2.png/v1/fill/w_118,h_96,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/wixagency_front_view_floating_one_3D_element_of_heart_icon_in_s_dd17aaf2-92d9-4274-8bae-44.png', // Using same image as logo for now
+      website: 'https://linewise.io'
+    },
+    {
+      image: '/wampany/wampany.png',
+      name: 'Cactus',
+      logo: 'https://bookface-images.s3.amazonaws.com/small_logos/2d53a6cf3c8074296831c1a7ec4bd88edbf7e572.png', // Using same image as logo for now
+      website: 'https://oncactus.com'
+    }
+  ];
+
+  const createImageCards = (companyIndex, count = 10) => {
+    const company = wampanyCompanies[companyIndex];
+    
+    return Array.from({ length: count }, (_, i) => {
+      // Add "You." text card at a specific position (let's say position 5)
+      const isYouCard = i === 5;
+      
+      return (
+        <motion.div
+          key={i}
+          className="h-32 w-48 md:h-40 md:w-60 lg:h-48 lg:w-72 mx-4 flex-shrink-0 rounded-2xl shadow-2xl border-4 border-white/60 backdrop-blur-sm overflow-hidden relative group cursor-pointer"
+          whileHover={{ scale: 1.05, rotate: 1 }}
+          transition={{ duration: 0.3 }}
+          style={{
+            boxShadow: '0 20px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)'
+          }}
+          onClick={() => !isYouCard && window.open(company.website, '_blank')}
+        >
+          {isYouCard ? (
+            <div className="w-full h-full bg-black flex items-center justify-center">
+              <span className="text-white text-2xl md:text-3xl font-['Bricolage_Grotesque'] font-bold">
+                Your Company.
+              </span>
+            </div>
+          ) : (
+            <>
+              <img
+                src={company.image}
+                alt={`${company.name} wallpaper`}
+                className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
+              />
+              
+              {/* Hover Overlay */}
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
+                {/* Company Name in top left */}
+                <div className="flex items-start justify-between">
+                  <h3 className="text-white text-lg md:text-xl font-['Bricolage_Grotesque'] font-semibold">
+                    {company.name}
+                  </h3>
+                  
+                  {/* Company Logo Avatar */}
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 p-1 flex items-center justify-center">
+                    <img
+                      src={company.logo}
+                      alt={`${company.name} logo`}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
+                </div>
+                
+                {/* Visit Website indicator */}
+                <div className="text-white/80 text-xs md:text-sm font-['Bricolage_Grotesque']">
+                  Click to visit website →
+                </div>
+              </div>
+            </>
+          )}
+        </motion.div>
+      )
+    })
   }
 
   const CustomMarquee = ({ children, direction = 'left', duration = 25 }) => {
@@ -286,39 +353,6 @@ const MarqueeSection = () => {
     )
   }
 
-  const gradientSets = [
-    [
-      'bg-gradient-to-br from-rose-300 via-pink-300 to-rose-400',
-      'bg-gradient-to-br from-pink-300 via-rose-300 to-pink-400',
-      'bg-gradient-to-br from-fuchsia-300 via-pink-300 to-rose-300',
-      'bg-gradient-to-br from-rose-400 via-pink-300 to-fuchsia-300',
-      'bg-gradient-to-br from-pink-400 via-rose-300 to-pink-300',
-      'bg-gradient-to-br from-rose-300 via-fuchsia-300 to-pink-400',
-      'bg-gradient-to-br from-pink-300 via-pink-400 to-rose-300',
-      'bg-gradient-to-br from-fuchsia-300 via-rose-300 to-pink-300'
-    ],
-    [
-      'bg-gradient-to-br from-emerald-300 via-green-300 to-teal-300',
-      'bg-gradient-to-br from-green-300 via-emerald-300 to-green-400',
-      'bg-gradient-to-br from-teal-300 via-green-300 to-emerald-300',
-      'bg-gradient-to-br from-green-400 via-emerald-300 to-teal-300',
-      'bg-gradient-to-br from-emerald-300 via-teal-300 to-green-300',
-      'bg-gradient-to-br from-green-300 via-green-400 to-emerald-300',
-      'bg-gradient-to-br from-teal-300 via-emerald-300 to-green-400',
-      'bg-gradient-to-br from-emerald-300 via-green-300 to-teal-400'
-    ],
-    [
-      'bg-gradient-to-br from-violet-300 via-purple-300 to-indigo-300',
-      'bg-gradient-to-br from-purple-300 via-violet-300 to-purple-400',
-      'bg-gradient-to-br from-indigo-300 via-purple-300 to-violet-300',
-      'bg-gradient-to-br from-purple-400 via-violet-300 to-indigo-300',
-      'bg-gradient-to-br from-violet-300 via-indigo-300 to-purple-300',
-      'bg-gradient-to-br from-purple-300 via-purple-400 to-violet-300',
-      'bg-gradient-to-br from-indigo-300 via-violet-300 to-purple-400',
-      'bg-gradient-to-br from-violet-300 via-purple-300 to-indigo-400'
-    ]
-  ]
-
   return (
     <motion.section 
       initial={{ opacity: 0 }}
@@ -327,24 +361,24 @@ const MarqueeSection = () => {
       viewport={{ once: true }}
       className="py-16 overflow-hidden"
     >
-      {/* First row - moving left */}
+      {/* First row - moving left - using kaboom.png */}
       <div className="mb-8">
         <CustomMarquee direction="left" duration={30}>
-          {createColorCards(gradientSets[0])}
+          {createImageCards(0)}
         </CustomMarquee>
       </div>
       
-      {/* Second row - moving right */}
+      {/* Second row - moving right - using linewise.png */}
       <div className="mb-8">
         <CustomMarquee direction="right" duration={25}>
-          {createColorCards(gradientSets[1])}
+          {createImageCards(1)}
         </CustomMarquee>
       </div>
       
-      {/* Third row - moving left */}
+      {/* Third row - moving left - using wampany.png */}
       <div className="mb-8">
         <CustomMarquee direction="left" duration={35}>
-          {createColorCards(gradientSets[2])}
+          {createImageCards(2)}
         </CustomMarquee>
       </div>
     </motion.section>
@@ -420,57 +454,46 @@ const OurStorySection = () => {
 const PricingSection = () => {
   const plans = [
     {
-      name: 'BASIC',
-      price: 19,
-      description: 'For all individuals and startups who want to start with professional wallpapers',
+      name: 'STARTER',
+      price: 4.99,
+      description: 'Perfect for solopreneurs',
       features: [
-        'Access to Basic Templates',
-        '5 Wallpapers / per month',
-        'Standard Resolution',
-        'Email Support',
-        'Basic Color Customization',
-        'Personal Use License'
+        '4 custom wallpapers delivered',
+        'High-quality resolution',
+        '0 revisions included',
+        '3-4 days delivery time',
+        'Phone & Desktop version',
       ],
       highlighted: false,
-      buttonText: 'Start free 14-day Trial'
+      buttonText: 'Get Wallpapers'
     },
     {
       name: 'PROFESSIONAL',
-      price: 49,
-      description: 'For businesses and professionals who need premium wallpaper solutions with advanced features',
+      price: 8.99,
+      description: 'Most popular choice for startups with a team',
       features: [
-        'Access to All Premium Templates',
-        'Unlimited Wallpapers',
-        '4K Ultra HD Resolution',
-        'Priority Support',
-        'Advanced AI Customization',
-        'Brand Color Integration',
-        'Commercial Use License',
-        'Custom Brand Elements',
-        'Team Collaboration',
-        'API Access',
-        'Bulk Export Options',
-        'Advanced Analytics'
+        '10 custom wallpapers delivered',
+        'Premium 4K resolution',
+        '5 revisions included',
+        '2-3 days delivery time',
+        'Phone & Desktop version'
       ],
       highlighted: true,
-      buttonText: 'Start free 14-day Trial'
+      buttonText: 'Get Wallpapers'
     },
     {
-      name: 'ENTERPRISE',
-      price: 99,
-      description: 'For large organizations requiring comprehensive wallpaper solutions and dedicated support',
+      name: 'PREMIUM',
+      price: 18.99,
+      description: 'Best for big teams & startups',
       features: [
-        'Everything in Professional',
-        'Custom Template Creation',
-        'Dedicated Account Manager',
-        'White-label Solutions',
-        'Advanced Team Management',
-        'Priority Feature Requests',
-        'Custom Integrations',
-        'SLA Guarantee'
+        '20 custom wallpapers delivered',
+        'Premium 4k resolution',
+        '10 revisions included',
+        '24 hours delivery time',
+        'Priority Support',
       ],
       highlighted: false,
-      buttonText: 'Contact Sales'
+      buttonText: 'Get Wallpapers'
     }
   ]
 
@@ -522,7 +545,7 @@ const PricingSection = () => {
               <p className="text-sm opacity-80 mb-6 leading-relaxed">{plan.description}</p>
               <div className="mb-8">
                 <span className="text-5xl font-bold">${plan.price}</span>
-                <span className="text-sm opacity-80 ml-2 block mt-1">per member, per month</span>
+                <span className="text-sm opacity-80 ml-2 block mt-1">one-time payment</span>
               </div>
             </div>
             
@@ -573,9 +596,9 @@ const Footer = () => {
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
-      className="py-16 text-center text-gray-600"
+      className="relative py-24 text-center text-gray-600"
     >
-      <p className="text-sm font-['Bricolage_Grotesque']">Designing with love by Jayden & Justin</p>
+      <p className="relative z-10 text-sm font-['Bricolage_Grotesque']">Crafted with luv from Jayden & Justin</p>
     </motion.footer>
   )
 }
