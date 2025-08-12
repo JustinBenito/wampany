@@ -8,9 +8,39 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Instrument+Serif:ital@0;1&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <title>The Wallpaper Company</title>
+    <script
+    src="https://www.paypal.com/sdk/js?client-id=BAAn-9jzQKST8KqF0tbofN5okf8i67J-x8VPfg_M46_wy3tJ7qJQklM9gYTihiMbAPGd7EMjZ8PB7TKGto&components=hosted-buttons&disable-funding=venmo&currency=USD" 
+    crossorigin="anonymous" 
+    async>
+  </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        paypal.HostedButtons({
+          hostedButtonId: "CKU8JKC9RU53Q"
+        })
+        .render("#paypal-container-CKU8JKC9RU53Q")
+      })
+    </script>
+    <div id="paypal-container-7DNSTVQMXNZUW"></div>
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        paypal.HostedButtons({
+          hostedButtonId: "7DNSTVQMXNZUW"
+        })
+        .render("#paypal-container-7DNSTVQMXNZUW")
+      })
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", (event) => {
+        paypal.HostedButtons({
+          hostedButtonId: "NMJCQ363PSWT8"
+        })
+        .render("#paypal-container-NMJCQ363PSWT8")
+      })
+    </script>
   </body>
 </html>

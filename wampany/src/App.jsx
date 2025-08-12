@@ -1,7 +1,27 @@
+/* global paypal */
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 
 function App() {
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState(null)
+
+  const openPaymentModal = (plan) => {
+    setSelectedPlan(plan)
+    setShowPaymentModal(true)
+  }
+
+  const closePaymentModal = () => {
+    // Hide all PayPal buttons when closing modal
+    const allPaypalButtons = document.querySelectorAll('[id^="paypal-container-"]')
+    allPaypalButtons.forEach(button => {
+      button.style.display = 'none'
+    })
+    
+    setShowPaymentModal(false)
+    setSelectedPlan(null)
+  }
+
   return (
     <div className="min-h-screen relative">
       {/* Watercolor background with gradient ellipses */}
@@ -22,10 +42,17 @@ function App() {
         <MarqueeSection />
         <div className="bg-gradient-to-b from-transparent via-stone-100/50 to-transparent">
           <OurStorySection />
-          <PricingSection />
+          <PricingSection openPaymentModal={openPaymentModal} />
           <Footer />
         </div>
       </div>
+      
+      {showPaymentModal && (
+        <PaymentModal 
+          plan={selectedPlan} 
+          onClose={closePaymentModal} 
+        />
+      )}
     </div>
   )
 }
@@ -245,33 +272,23 @@ const HeroSection = () => {
 }
 
 const MarqueeSection = () => {
-  const wampanyCompanies = [
-    {
-      image: '/wampany/kaboom.png',
-      name: 'kaboom.ai',
-      logo: 'https://media.licdn.com/dms/image/v2/D4E0BAQGa_OvWdy9pbQ/company-logo_200_200/B4EZdlkk9QHgAQ-/0/1749755778761/kaboom_ai_logo?e=2147483647&v=beta&t=8POa7IthJ4w9XCGTUw2y29_ZdpG5BsvI1ID8kGv7y5Y', // Using same image as logo for now
-      website: 'https://kaboom.ai'
-    },
-    {
-      image: '/wampany/linewise.png',
-      name: 'linewise.io',
-      logo: 'https://static.wixstatic.com/media/cc1207_3ecb6ce3bd9c413a9f45b39bfd52b0e8~mv2.png/v1/fill/w_118,h_96,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/wixagency_front_view_floating_one_3D_element_of_heart_icon_in_s_dd17aaf2-92d9-4274-8bae-44.png', // Using same image as logo for now
-      website: 'https://linewise.io'
-    },
-    {
-      image: '/wampany/wampany.png',
-      name: 'Cactus',
-      logo: 'https://bookface-images.s3.amazonaws.com/small_logos/2d53a6cf3c8074296831c1a7ec4bd88edbf7e572.png', // Using same image as logo for now
-      website: 'https://oncactus.com'
-    }
+  // Distribute 9 images across 3 sliders (3 images per slider)
+  const sliderImages = [
+    // Slider 1: images 1, 2, 3
+    ['/wampany/1.png', '/wampany/2.png', '/wampany/3.png', '/wampany/10.png'],
+    // Slider 2: images 4, 5, 6
+    ['/wampany/4.png', '/wampany/5.png', '/wampany/6.png', '/wampany/11.png'],
+    // Slider 3: images 7, 8, 9
+    ['/wampany/7.png', '/wampany/8.png', '/wampany/9.png']
   ];
 
-  const createImageCards = (companyIndex, count = 10) => {
-    const company = wampanyCompanies[companyIndex];
+  const createImageCards = (sliderIndex, count = 5) => {
+    const images = sliderImages[sliderIndex];
     
     return Array.from({ length: count }, (_, i) => {
-      // Add "You." text card at a specific position (let's say position 5)
-      const isYouCard = i === 5;
+      // Use all available images, then show "Your Company ?" for remaining slots
+      const isRealImage = i < images.length;
+      const currentImage = isRealImage ? images[i] : null;
       
       return (
         <motion.div
@@ -282,46 +299,19 @@ const MarqueeSection = () => {
           style={{
             boxShadow: '0 20px 40px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.6)'
           }}
-          onClick={() => !isYouCard && window.open(company.website, '_blank')}
         >
-          {isYouCard ? (
-            <div className="w-full h-full bg-black flex items-center justify-center">
-              <span className="text-white text-2xl md:text-3xl font-['Bricolage_Grotesque'] font-bold">
-                Your Company.
+          {isRealImage ? (
+            <img
+              src={currentImage}
+              alt={`Wallpaper ${i + 1}`}
+              className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+              <span className="text-white text-xl md:text-2xl font-['Bricolage_Grotesque'] font-bold text-center">
+                Your Company ?
               </span>
             </div>
-          ) : (
-            <>
-              <img
-                src={company.image}
-                alt={`${company.name} wallpaper`}
-                className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
-              />
-              
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4">
-                {/* Company Name in top left */}
-                <div className="flex items-start justify-between">
-                  <h3 className="text-white text-lg md:text-xl font-['Bricolage_Grotesque'] font-semibold">
-                    {company.name}
-                  </h3>
-                  
-                  {/* Company Logo Avatar */}
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/90 p-1 flex items-center justify-center">
-                    <img
-                      src={company.logo}
-                      alt={`${company.name} logo`}
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  </div>
-                </div>
-                
-                {/* Visit Website indicator */}
-                <div className="text-white/80 text-xs md:text-sm font-['Bricolage_Grotesque']">
-                  Click to visit website →
-                </div>
-              </div>
-            </>
           )}
         </motion.div>
       )
@@ -361,21 +351,21 @@ const MarqueeSection = () => {
       viewport={{ once: true }}
       className="py-16 overflow-hidden"
     >
-      {/* First row - moving left - using kaboom.png */}
+      {/* First row - moving left - using images 1, 2, 3 */}
       <div className="mb-8">
         <CustomMarquee direction="left" duration={30}>
           {createImageCards(0)}
         </CustomMarquee>
       </div>
       
-      {/* Second row - moving right - using linewise.png */}
+      {/* Second row - moving right - using images 4, 5, 6 */}
       <div className="mb-8">
         <CustomMarquee direction="right" duration={25}>
           {createImageCards(1)}
         </CustomMarquee>
       </div>
       
-      {/* Third row - moving left - using wampany.png */}
+      {/* Third row - moving left - using images 7, 8, 9 */}
       <div className="mb-8">
         <CustomMarquee direction="left" duration={35}>
           {createImageCards(2)}
@@ -417,7 +407,7 @@ const OurStorySection = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
         >
-          We believe that beautiful design should be accessible to everyone. Our mission is to transform ordinary spaces into extraordinary experiences through carefully curated wallpaper collections.
+          We as brothers love designing wallpapers for ourselves. <br /> We get peace of mind when we see our wallpapers are refreshed often and have a fresh outlook.
         </motion.p>
         <motion.p 
           className="mb-8 leading-relaxed"
@@ -426,7 +416,7 @@ const OurStorySection = () => {
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          Founded by a team of passionate designers and technologists, The Wallpaper Company combines traditional craftsmanship with cutting-edge digital innovation to create stunning visual narratives for modern living and working spaces.
+          We figured, building something around wallpapers would be the best way for us to capitalize on our love for unique wallpapers
         </motion.p>
         <motion.p 
           className="mb-8 leading-relaxed"
@@ -435,7 +425,7 @@ const OurStorySection = () => {
           transition={{ duration: 0.6, delay: 0.5 }}
           viewport={{ once: true }}
         >
-          From watercolor abstracts to geometric patterns, our AI-powered design platform generates unique wallpapers that reflect your brand's personality and aesthetic vision.
+          Going to school and having fun was boring, so we jumped into Entrepreneurship and have decided to sell Wallpapers to amazing people like you. 
         </motion.p>
         <motion.p 
           className="leading-relaxed"
@@ -444,14 +434,14 @@ const OurStorySection = () => {
           transition={{ duration: 0.6, delay: 0.6 }}
           viewport={{ once: true }}
         >
-          Join thousands of satisfied customers who have transformed their spaces with our premium wallpaper solutions. Experience the perfect blend of artistry and technology.
+   {"Hope you like it <3"}
         </motion.p>
       </motion.div>
     </motion.section>
   )
 }
 
-const PricingSection = () => {
+const PricingSection = ({ openPaymentModal }) => {
   const plans = [
     {
       name: 'STARTER',
@@ -468,9 +458,9 @@ const PricingSection = () => {
       buttonText: 'Get Wallpapers'
     },
     {
-      name: 'PROFESSIONAL',
+      name: 'STARTUP',
       price: 8.99,
-      description: 'Most popular choice for startups with a team',
+      description: 'Most popular choice for startups with a small team',
       features: [
         '10 custom wallpapers delivered',
         'Premium 4K resolution',
@@ -530,12 +520,12 @@ const PricingSection = () => {
             }}
             className={`relative p-8 rounded-3xl backdrop-blur-sm border font-['Bricolage_Grotesque'] ${
               plan.highlighted 
-                ? 'bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 text-white border-white/30 shadow-2xl transform scale-105 md:scale-110' 
+                ? 'bg-gradient-to-br from-pink-500 via-pink-300 to-pink-100 text-white border-white/30 shadow-2xl transform scale-105 md:scale-110' 
                 : 'bg-white/60 text-gray-900 border-white/60 shadow-xl'
             } ${plan.highlighted ? 'md:mt-[-2rem] md:mb-[-2rem]' : ''}`}
           >
             {plan.highlighted && (
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-6 py-2 rounded-full text-sm font-bold">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 border-2 bg-white text-gray-900 px-6 py-2 rounded-full text-sm font-bold">
                 MOST POPULAR
               </div>
             )}
@@ -560,7 +550,7 @@ const PricingSection = () => {
                   viewport={{ once: true }}
                 >
                   <span className={`w-3 h-3 rounded-full mr-4 flex-shrink-0 ${
-                    plan.highlighted ? 'bg-white' : 'bg-gradient-to-r from-violet-400 to-purple-400'
+                    plan.highlighted ? 'bg-white' : 'bg-gradient-to-r from-pink-400 to-pink-400'
                   }`}></span>
                   {feature}
                 </motion.li>
@@ -568,12 +558,13 @@ const PricingSection = () => {
             </ul>
             
             <motion.button
+              onClick={() => openPaymentModal(plan)}
               whileHover={{ scale: 1.005, transition: { duration: 1.3, type: "easeInOut", bounce: 0 } }}
               whileTap={{ scale: 0.95 }}
               className={`w-full py-4 px-6 rounded-2xl font-semibold text-sm transition-all duration-200 ${
                 plan.highlighted
-                  ? 'bg-white text-purple-600 hover:bg-gray-50 shadow-lg'
-                  : 'bg-gradient-to-r from-violet-500 to-purple-500 text-white hover:from-violet-600 hover:to-purple-600 shadow-lg'
+                  ? 'bg-white text-pink-600 hover:bg-gray-50 shadow-lg'
+                  : 'bg-gradient-to-r from-pink-500 to-pink-100 text-white hover:from-violet-600 hover:to-purple-600 shadow-lg'
               }`}
             >
               {plan.buttonText}
@@ -589,6 +580,200 @@ const PricingSection = () => {
   )
 }
 
+const PaymentModal = ({ plan, onClose }) => {
+  const paypalContainerId =
+    plan?.price === 4.99
+      ? "paypal-container-CKU8JKC9RU53Q"
+      : plan?.price === 8.99
+      ? "paypal-container-7DNSTVQMXNZUW"
+      : plan?.price === 18.99
+      ? "paypal-container-NMJCQ363PSWT8"
+      : "paypal-container-CKU8JKC9RU53Q";
+
+  useEffect(() => {
+    if (!plan || !window.paypal) return;
+
+    const container = document.getElementById(paypalContainerId);
+    if (!container) return;
+
+    // Clear any previously rendered PayPal button
+    container.innerHTML = "";
+
+    // Hide all existing PayPal elements on the page first
+    const existingPaypalElements = document.querySelectorAll('[id*="paypal"], [class*="paypal"], iframe[src*="paypal"]');
+    existingPaypalElements.forEach(el => {
+      if (!el.closest(`#${paypalContainerId}`)) {
+        el.style.display = 'none';
+      }
+    });
+
+    // Determine hosted button ID
+    const hostedButtonId =
+      plan.price === 4.99
+        ? "CKU8JKC9RU53Q"
+        : plan.price === 8.99
+        ? "7DNSTVQMXNZUW"
+        : plan.price === 18.99
+        ? "NMJCQ363PSWT8"
+        : "CKU8JKC9RU53Q";
+
+    // Create a mutation observer to catch any PayPal elements created outside the modal
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            // Check if this is a PayPal-related element
+            if (node.id && node.id.includes('paypal') && !node.closest(`#${paypalContainerId}`)) {
+              node.style.display = 'none';
+            }
+            if (node.className && typeof node.className === 'string' && node.className.includes('paypal') && !node.closest(`#${paypalContainerId}`)) {
+              node.style.display = 'none';
+            }
+            // Check for iframes with PayPal src
+            if (node.tagName === 'IFRAME' && node.src && node.src.includes('paypal') && !node.closest(`#${paypalContainerId}`)) {
+              node.style.display = 'none';
+            }
+            // Check children of added nodes
+            const paypalChildren = node.querySelectorAll ? node.querySelectorAll('[id*="paypal"], [class*="paypal"], iframe[src*="paypal"]') : [];
+            paypalChildren.forEach(child => {
+              if (!child.closest(`#${paypalContainerId}`)) {
+                child.style.display = 'none';
+              }
+            });
+          }
+        });
+      });
+    });
+
+    // Start observing
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    // Render PayPal Hosted Button
+    paypal.HostedButtons({
+      hostedButtonId
+    }).render(`#${paypalContainerId}`).then(() => {
+      // Force PayPal button to stay within container
+      const paypalFrame = container.querySelector('iframe');
+      if (paypalFrame) {
+        paypalFrame.style.position = 'relative';
+        paypalFrame.style.width = '100%';
+        paypalFrame.style.maxWidth = '100%';
+        paypalFrame.style.zIndex = '1';
+      }
+      
+      // Also check for any direct PayPal elements within container
+      const paypalElements = container.querySelectorAll('[class*="paypal"]');
+      paypalElements.forEach(el => {
+        el.style.position = 'relative';
+        el.style.width = '100%';
+        el.style.maxWidth = '100%';
+      });
+    }).catch(err => {
+      console.error('PayPal button render error:', err);
+    });
+
+    // Cleanup function
+    return () => {
+      observer.disconnect();
+      // Hide all PayPal elements when component unmounts
+      const allPaypalElements = document.querySelectorAll('[id*="paypal"], [class*="paypal"], iframe[src*="paypal"]');
+      allPaypalElements.forEach(el => {
+        if (!el.closest(`#${paypalContainerId}`)) {
+          el.style.display = 'none';
+        }
+      });
+    };
+  }, [plan, paypalContainerId]);
+
+  if (!plan) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      onClick={onClose}
+      style={{ isolation: "isolate", contain: "layout style" }}
+    >
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+        className="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          zIndex: 9999,
+          position: "relative",
+          isolation: "isolate",
+          contain: "layout style paint",
+          transform: "translateZ(0)"
+        }}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl"
+        >
+          ×
+        </button>
+
+        <div className="text-center mb-8">
+          <h3 className="text-2xl font-bold mb-2 font-['Bricolage_Grotesque']">
+            {plan.name} Plan
+          </h3>
+          <p className="text-gray-600 mb-4">{plan.description}</p>
+          <div className="text-3xl font-bold text-purple-600">
+            ${plan.price}
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <h4 className="font-semibold mb-3 text-gray-800">What you get:</h4>
+          <ul className="space-y-2">
+            {plan.features.map((feature, idx) => (
+              <li key={idx} className="flex items-center text-sm text-gray-600">
+                <span className="w-2 h-2 bg-purple-500 rounded-full mr-3"></span>
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="border-t pt-6">
+          <div
+            className="w-full relative"
+            style={{
+              isolation: "isolate",
+              contain: "layout style paint",
+              position: "relative",
+              zIndex: 1
+            }}
+          >
+            <div
+              id={paypalContainerId}
+              className="min-h-[50px] w-full relative"
+              style={{
+                position: "relative",
+                zIndex: 1,
+                overflow: "hidden",
+                contain: "layout style paint",
+                isolation: "isolate",
+                display: "block",
+                width: "100%",
+                maxWidth: "100%"
+              }}
+            ></div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+
 const Footer = () => {
   return (
     <motion.footer 
@@ -598,7 +783,7 @@ const Footer = () => {
       viewport={{ once: true }}
       className="relative py-24 text-center text-gray-600"
     >
-      <p className="relative z-10 text-sm font-['Bricolage_Grotesque']">Crafted with luv from Jayden & Justin</p>
+      <p className="relative z-10 text-sm font-['Bricolage_Grotesque']">Crafted with <span className='text-pink-500 font-bold'>luv</span> from <span><a href="https://www.linkedin.com/in/jayden-bennet/" className='hover:underline'>Jayden</a></span> & Justin</p>
     </motion.footer>
   )
 }
