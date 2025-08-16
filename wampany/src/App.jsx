@@ -264,7 +264,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 1.2 }}
           className="text-gray-600 text-xl md:text-2xl font-light font-['Bricolage_Grotesque'] max-w-2xl mx-auto"
         >
-          generate stunning wallpapers for your company
+          We generate stunning wallpapers for your company
         </motion.p>
       </motion.div>
     </motion.section>
@@ -279,7 +279,7 @@ const MarqueeSection = () => {
     // Slider 2: images 4, 5, 6
     ['/wampany/4.png', '/wampany/5.png', '/wampany/6.png', '/wampany/11.png'],
     // Slider 3: images 7, 8, 9
-    ['/wampany/7.png', '/wampany/8.png', '/wampany/9.png']
+    ['/wampany/7.png', '/wampany/8.png', '/wampany/9.png', '/wampany/12.png']
   ];
 
   const createImageCards = (sliderIndex, count = 5) => {
