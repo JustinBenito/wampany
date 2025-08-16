@@ -42,6 +42,7 @@ function App() {
         <MarqueeSection />
         <div className="bg-gradient-to-b from-transparent via-stone-100/50 to-transparent">
           <OurStorySection />
+          <FoundersSection />
           <PricingSection openPaymentModal={openPaymentModal} />
           <Footer />
         </div>
@@ -437,6 +438,108 @@ const OurStorySection = () => {
    {"Hope you like it <3"}
         </motion.p>
       </motion.div>
+    </motion.section>
+  )
+}
+
+const FoundersSection = () => {
+  return (
+    <motion.section 
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="py-24 px-6 text-center max-w-5xl mx-auto"
+    >
+      <motion.h2 
+        className="text-5xl md:text-6xl font-bold mb-16 text-gray-900 font-['Bricolage_Grotesque']"
+        initial={{ scale: 0.9, y: 30 }}
+        whileInView={{ scale: 1, y: 0 }}
+        transition={{ duration: 0.7, type: "spring", bounce: 0.3 }}
+        viewport={{ once: true }}
+      >
+        Founders
+      </motion.h2>
+      
+      <div className="flex flex-col md:flex-row items-center justify-center gap-16 max-w-4xl mx-auto">
+        {/* Jayden */}
+        <motion.div
+          initial={{ x: -50, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="flex flex-col items-center"
+        >
+          <motion.div
+            whileHover={{ scale: 1.05, rotate: 2 }}
+            transition={{ duration: 0.3 }}
+            className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-white shadow-2xl mb-6"
+          >
+            <img
+              src="https://media.licdn.com/dms/image/v2/D5603AQFtPipupf1tYw/profile-displayphoto-crop_800_800/B56Zf.lhHOHIAM-/0/1752322938014?e=1758153600&v=beta&t=gLanVX-LPqCn5Ik8PyY1eYpI0-3s3Z9DrADoKAZQ6dU"
+              alt="Jayden - Founder"
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+          <motion.h3 
+            className="text-2xl md:text-3xl font-bold text-gray-900 font-['Bricolage_Grotesque']"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            Jayden
+          </motion.h3>
+          <motion.p 
+            className="text-gray-600 text-lg font-light font-['Bricolage_Grotesque']"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+          >
+            Co-founder
+          </motion.p>
+        </motion.div>
+
+        {/* Justin */}
+        <motion.div
+          initial={{ x: 50, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="flex flex-col items-center"
+        >
+          <motion.div
+            whileHover={{ scale: 1.05, rotate: -2 }}
+            transition={{ duration: 0.3 }}
+            className="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-white shadow-2xl mb-6"
+          >
+            <img
+              src="https://media.licdn.com/dms/image/v2/D5603AQH2mPat5ebzGQ/profile-displayphoto-crop_800_800/B56Zh0WUAhHkAI-/0/1754298667840?e=1758153600&v=beta&t=G_aa4Lm5zx8zUb98VAOLCNBKj_07HS8-ALFUJFKj1Yg"
+              alt="Justin - Co-founder"
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+          <motion.h3 
+            className="text-2xl md:text-3xl font-bold text-gray-900 font-['Bricolage_Grotesque']"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+          >
+            Justin
+          </motion.h3>
+          <motion.p 
+            className="text-gray-600 text-lg font-light font-['Bricolage_Grotesque']"
+            initial={{ y: 20, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            viewport={{ once: true }}
+          >
+            Co-founder
+          </motion.p>
+        </motion.div>
+      </div>
     </motion.section>
   )
 }
