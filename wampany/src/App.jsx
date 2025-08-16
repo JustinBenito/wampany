@@ -570,9 +570,9 @@ const PricingSection = ({ openPaymentModal }) => {
               {plan.buttonText}
             </motion.button>
             
-            <p className="text-xs text-center mt-6 opacity-60">
+            {/* <p className="text-xs text-center mt-6 opacity-60">
               No credit card required
-            </p>
+            </p> */}
           </motion.div>
         ))}
       </div>
